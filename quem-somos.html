@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Conheça a história, missão, visão e equipe da Casa de Acolhimento Esperança.">
+  <title>Quem Somos — Casa de Acolhimento Esperança</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .historia-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .historia-img {
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, var(--green) 0%, #0d7a5a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+    }
+    .historia-img::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40%;
+      background: linear-gradient(to top, rgba(0,0,0,.3), transparent);
+    }
+    .historia-content h2 { margin-bottom: 16px; }
+    .historia-content p { line-height: 1.8; margin-bottom: 16px; }
+
+    .mvv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .mvv-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px 24px;
+      box-shadow: var(--shadow);
+    }
+    .mvv-card__tag {
+      display: inline-block;
+      background: var(--green);
+      color: var(--white);
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
+    .mvv-card h3 { margin-bottom: 10px; font-size: 1.3rem; }
+    .mvv-card p  { font-size: .93rem; color: var(--text-light); line-height: 1.7; }
+
+    .valores-list { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+    .valor-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: .9rem; color: var(--text-mid);
+    }
+    .valor-item::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+    .equipe-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .equipe-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition);
+    }
+    .equipe-card:hover { transform: translateY(-4px); }
+    .equipe-card__foto {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      border: 3px solid var(--green-light);
+    }
+    .equipe-card h4 { font-size: 1rem; margin-bottom: 4px; }
+    .equipe-card .cargo { font-size: .82rem; color: var(--amber-dark); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+
+    .linha-do-tempo { position: relative; padding-left: 32px; }
+    .linha-do-tempo::before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--amber), var(--green));
+    }
+    .timeline-item { position: relative; margin-bottom: 32px; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -28px; top: 6px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--amber);
+      border: 2px solid var(--white);
+      box-shadow: 0 0 0 2px var(--amber);
+    }
+    .timeline-item__year {
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--amber-dark);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 4px;
+    }
+    .timeline-item h4 { font-size: 1rem; margin-bottom: 4px; }
+    .timeline-item p  { font-size: .9rem; color: var(--text-light); }
+
+    @media (max-width: 900px) {
+      .equipe-grid { grid-template-columns: repeat(2,1fr); }
+      .mvv-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .historia-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .equipe-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="navbar__inner">
+    <a href="index.html" class="navbar__logo" aria-label="Casa de Acolhimento Esperança - Página Inicial">
+      <span class="navbar__logo-icon" aria-hidden="true">🏡</span>
+      <span>Casa Esperança</span>
+    </a>
+    <nav aria-label="Navegação principal">
+      <ul class="navbar__menu" id="main-menu" role="list">
+        <li><a href="index.html"        class="navbar__link">Home</a></li>
+        <li><a href="quem-somos.html"   class="navbar__link active">Quem Somos</a></li>
+        <li><a href="projetos.html"     class="navbar__link">Projetos</a></li>
+        <li><a href="como-ajudar.html"  class="navbar__link">Como Ajudar</a></li>
+        <li><a href="contato.html"      class="navbar__link navbar__cta">Contato</a></li>
+      </ul>
+    </nav>
+    <button class="navbar__hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main-content">
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <h1>Quem Somos</h1>
+  <p>Conheça nossa história, nossa equipe e os valores que guiam cada ação da Casa Esperança.</p>
+</section>
+
+<!-- HISTÓRIA -->
+<section class="section" aria-labelledby="historia-title">
+  <div class="container">
+    <div class="historia-grid">
+      <div class="historia-img" aria-hidden="true">🏡</div>
+      <div class="historia-content" data-reveal>
+        <span class="section-label">Nossa Trajetória</span>
+        <h2 id="historia-title">Uma história de amor e luta</h2>
+        <p>
+          A Casa de Acolhimento Esperança nasceu em 2013, fruto do sonho de um grupo de educadores e assistentes
+          sociais que acreditavam que toda criança merece um lugar seguro para crescer.
+        </p>
+        <p>
+          Fundada em São Paulo, a instituição surgiu para atender uma demanda real e urgente: oferecer acolhimento
+          humanizado para crianças e adolescentes afastados do convívio familiar por determinação judicial, situação
+          prevista pelo Estatuto da Criança e do Adolescente (ECA).
+        </p>
+        <p>
+          Ao longo de mais de 12 anos, atendemos mais de 500 crianças, sempre com o compromisso de preservar
+          vínculos afetivos, garantir acesso à educação e promover o desenvolvimento integral de cada acolhido.
+        </p>
+        <div style="margin-top:28px">
+          <div class="linha-do-tempo">
+            <div class="timeline-item">
+              <div class="timeline-item__year">2013</div>
+              <h4>Fundação</h4>
+              <p>Abertura da casa com capacidade para 12 crianças e 5 colaboradores.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-item__year">2016</div>
+              <h4>Ampliação</h4>
+              <p>Reforma e expansão do espaço físico; primeiro projeto de reforço escolar implantado.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-item__year">2019</div>
+              <h4>Projetos Culturais</h4>
+              <p>Lançamento dos programas Arte e Expressão e Esporte pela Paz.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-item__year">2025</div>
+              <h4>Presença Digital</h4>
+              <p>Lançamento do site institucional para ampliar visibilidade e captação de recursos.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MVV -->
+<section class="section section--alt" aria-labelledby="mvv-title">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:40px" data-reveal>
+      <span class="section-label">Identidade Institucional</span>
+      <h2 id="mvv-title">Missão, Visão e Valores</h2>
+    </div>
+    <div class="mvv-grid">
+      <div class="mvv-card" data-reveal>
+        <span class="mvv-card__tag">Missão</span>
+        <h3>Por que existimos</h3>
+        <p>Oferecer acolhimento humanizado, proteção integral e oportunidades de desenvolvimento a crianças e adolescentes em situação de vulnerabilidade social, respeitando sua história e potencializando seu futuro.</p>
+      </div>
+      <div class="mvv-card" data-reveal data-delay="1">
+        <span class="mvv-card__tag" style="background:var(--amber-dark)">Visão</span>
+        <h3>Onde queremos chegar</h3>
+        <p>Ser referência em acolhimento institucional no Estado de São Paulo, reconhecida pela excelência no cuidado integral e pela capacidade de mobilizar a comunidade em torno da proteção à infância até 2030.</p>
+      </div>
+      <div class="mvv-card" data-reveal data-delay="2">
+        <span class="mvv-card__tag" style="background:#6d28d9">Valores</span>
+        <h3>Como nos guiamos</h3>
+        <div class="valores-list">
+          <span class="valor-item">Dignidade e respeito à criança</span>
+          <span class="valor-item">Transparência na gestão</span>
+          <span class="valor-item">Acolhimento sem julgamento</span>
+          <span class="valor-item">Trabalho em equipe</span>
+          <span class="valor-item">Comprometimento social</span>
+          <span class="valor-item">Inovação nas práticas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPE -->
+<section class="section" aria-labelledby="equipe-title">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:40px" data-reveal>
+      <span class="section-label">Pessoas</span>
+      <h2 id="equipe-title">Nossa Equipe</h2>
+      <p class="section-sub" style="margin:0 auto">Profissionais dedicados que fazem a diferença todos os dias.</p>
+    </div>
+    <div class="equipe-grid">
+      <div class="equipe-card" data-reveal>
+        <div class="equipe-card__foto" style="background:var(--green-light)">👩</div>
+        <h4>Maria Silva</h4>
+        <span class="cargo">Diretora</span>
+      </div>
+      <div class="equipe-card" data-reveal data-delay="1">
+        <div class="equipe-card__foto" style="background:var(--amber-light)">👨</div>
+        <h4>João Santos</h4>
+        <span class="cargo">Assistente Social</span>
+      </div>
+      <div class="equipe-card" data-reveal data-delay="2">
+        <div class="equipe-card__foto" style="background:#ede9fe">👩</div>
+        <h4>Ana Oliveira</h4>
+        <span class="cargo">Pedagoga</span>
+      </div>
+      <div class="equipe-card" data-reveal data-delay="3">
+        <div class="equipe-card__foto" style="background:#fee2e2">👨</div>
+        <h4>Carlos Lima</h4>
+        <span class="cargo">Psicólogo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section section--green text-center">
+  <div class="container" data-reveal>
+    <h2 style="color:var(--white);margin-bottom:12px">Quer fazer parte da nossa equipe?</h2>
+    <p style="color:rgba(255,255,255,.75);margin-bottom:28px;max-width:420px;margin-left:auto;margin-right:auto">
+      Aceitamos voluntários com diversas habilidades. Venha transformar vidas conosco.
+    </p>
+    <a href="contato.html" class="btn btn-primary">Seja voluntário</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer__grid">
+    <div>
+      <div class="footer__brand">🏡 Casa de Acolhimento Esperança</div>
+      <p class="footer__desc">Instituição sem fins lucrativos dedicada à proteção e ao desenvolvimento integral de crianças e adolescentes em situação de vulnerabilidade social.</p>
+      <div class="footer__socials">
+        <a href="#" class="footer__social" aria-label="Instagram">📷</a>
+        <a href="#" class="footer__social" aria-label="Facebook">📘</a>
+        <a href="#" class="footer__social" aria-label="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Navegação</div>
+      <ul class="footer__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quem-somos.html">Quem Somos</a></li>
+        <li><a href="projetos.html">Projetos</a></li>
+        <li><a href="como-ajudar.html">Como Ajudar</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Como Ajudar</div>
+      <ul class="footer__links">
+        <li><a href="como-ajudar.html#financeiro">Doação Financeira</a></li>
+        <li><a href="como-ajudar.html#itens">Doação de Itens</a></li>
+        <li><a href="como-ajudar.html#voluntariado">Voluntariado</a></li>
+        <li><a href="como-ajudar.html#urgentes">Necessidades Urgentes</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Contato</div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">📍</span><span>Rua Exemplo, 123 — Bairro<br>São Paulo / SP</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">📞</span><span>(11) 0000-0000</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">✉️</span><span>contato@esperanca.org.br</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">🕐</span><span>Seg–Sex, 08h–17h</span></div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2025 Casa de Acolhimento Esperança. Todos os direitos reservados.</span>
+    <span class="footer__cnpj">CNPJ: 00.000.000/0001-00</span>
+  </div>
+</footer>
+
+<script src="js/global.js"></script>
+</body>
+</html>

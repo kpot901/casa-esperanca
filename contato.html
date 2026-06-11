@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Fale com a Casa de Acolhimento Esperança. Formulário para voluntariado, doações e parcerias.">
+  <title>Contato — Casa de Acolhimento Esperança</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .contato-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    /* FORM */
+    .form-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: var(--shadow-md);
+    }
+    .form-card h2 { margin-bottom: 6px; }
+    .form-card > p { color: var(--text-light); font-size: .9rem; margin-bottom: 28px; }
+
+    .form-group { margin-bottom: 20px; position: relative; }
+    .form-label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .form-label .req { color: var(--red); margin-left: 2px; }
+
+    .form-input {
+      width: 100%;
+      padding: 11px 14px;
+      border: 2px solid var(--stone);
+      border-radius: var(--radius);
+      font-family: var(--font-body);
+      font-size: .93rem;
+      color: var(--text);
+      background: var(--cream);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    .form-input:focus    { border-color: var(--green); box-shadow: 0 0 0 3px rgba(6,95,70,.12); background: var(--white); }
+    .form-input.error    { border-color: var(--red); }
+    .form-input.success  { border-color: var(--green); }
+
+    .form-error {
+      display: none;
+      font-size: .8rem;
+      color: var(--red);
+      margin-top: 4px;
+    }
+    .form-error.show { display: block; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    textarea.form-input { resize: vertical; min-height: 110px; }
+    select.form-input   { cursor: pointer; }
+
+    .char-count { text-align: right; font-size: .75rem; color: var(--text-light); margin-top: 3px; }
+    .char-count.warn { color: var(--amber-dark); }
+    .char-count.min-ok { color: var(--green); }
+
+    /* LGPD */
+    .lgpd-group {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--amber-light);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(245,158,11,.3);
+    }
+    .lgpd-group input[type=checkbox] {
+      width: 18px; height: 18px;
+      accent-color: var(--green);
+      flex-shrink: 0;
+      margin-top: 2px;
+      cursor: pointer;
+    }
+    .lgpd-group label { font-size: .85rem; color: var(--text-mid); cursor: pointer; }
+    .lgpd-group a { color: var(--green); text-decoration: underline; }
+    .lgpd-group.error-state { background: var(--red-light); border-color: var(--red); }
+
+    /* SUBMIT */
+    .btn-submit {
+      width: 100%;
+      justify-content: center;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none !important; }
+
+    /* SUCCESS STATE */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .form-success.show { display: block; }
+    .form-success__icon { font-size: 3.5rem; margin-bottom: 16px; }
+    .form-success h3    { margin-bottom: 8px; color: var(--green); }
+    .form-success p     { color: var(--text-light); }
+
+    /* CONTACT INFO */
+    .info-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+    .info-card h3 { margin-bottom: 20px; font-size: 1.1rem; }
+    .info-item {
+      display: flex;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .info-item:last-child { border-bottom: none; }
+    .info-item__icon {
+      width: 40px; height: 40px;
+      background: var(--green-light);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .info-item__label { font-size: .75rem; color: var(--text-light); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+    .info-item__value { font-size: .92rem; font-weight: 500; color: var(--text); }
+
+    /* MAP */
+    .map-embed {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: var(--stone);
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-light);
+      font-size: .9rem;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .map-embed a { color: var(--green); font-weight: 600; text-decoration: underline; }
+
+    @media (max-width: 900px) {
+      .contato-grid { grid-template-columns: 1fr; }
+      .form-card    { padding: 28px 20px; }
+      .form-row     { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="navbar__inner">
+    <a href="index.html" class="navbar__logo" aria-label="Casa de Acolhimento Esperança - Página Inicial">
+      <span class="navbar__logo-icon" aria-hidden="true">🏡</span>
+      <span>Casa Esperança</span>
+    </a>
+    <nav aria-label="Navegação principal">
+      <ul class="navbar__menu" id="main-menu" role="list">
+        <li><a href="index.html"        class="navbar__link">Home</a></li>
+        <li><a href="quem-somos.html"   class="navbar__link">Quem Somos</a></li>
+        <li><a href="projetos.html"     class="navbar__link">Projetos</a></li>
+        <li><a href="como-ajudar.html"  class="navbar__link">Como Ajudar</a></li>
+        <li><a href="contato.html"      class="navbar__link active navbar__cta">Contato</a></li>
+      </ul>
+    </nav>
+    <button class="navbar__hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main-content">
+
+<section class="page-header">
+  <h1>Fale Conosco</h1>
+  <p>Preencha o formulário e responderemos em até 24 horas úteis.</p>
+</section>
+
+<section class="section" aria-labelledby="contato-title">
+  <div class="container">
+    <div class="contato-grid">
+
+      <!-- FORM -->
+      <div class="form-card" data-reveal>
+        <h2 id="contato-title">Formulário de Contato</h2>
+        <p>Para voluntariado, doações, parcerias ou dúvidas gerais.</p>
+
+        <form id="contato-form" novalidate>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="nome">Nome completo<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="nome" name="nome" class="form-input" placeholder="Seu nome completo"
+                     autocomplete="name" required minlength="3" aria-required="true" aria-describedby="nome-error">
+              <span class="form-error" id="nome-error" role="alert"></span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="email">E-mail<span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="email" name="email" class="form-input" placeholder="seu@email.com"
+                     autocomplete="email" required aria-required="true" aria-describedby="email-error">
+              <span class="form-error" id="email-error" role="alert"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="telefone">Telefone / WhatsApp</label>
+              <input type="tel" id="telefone" name="telefone" class="form-input" placeholder="(11) 9 0000-0000"
+                     autocomplete="tel" aria-describedby="telefone-hint">
+              <span style="font-size:.75rem;color:var(--text-light);display:block;margin-top:3px" id="telefone-hint">Opcional</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="tipo">Tipo de interesse<span class="req" aria-hidden="true">*</span></label>
+              <select id="tipo" name="tipo" class="form-input" required aria-required="true" aria-describedby="tipo-error">
+                <option value="">Selecione uma opção</option>
+                <option value="voluntariado">Voluntariado</option>
+                <option value="doacao">Doação</option>
+                <option value="parceria">Parceria institucional</option>
+                <option value="outro">Outro assunto</option>
+              </select>
+              <span class="form-error" id="tipo-error" role="alert"></span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="mensagem">Mensagem<span class="req" aria-hidden="true">*</span></label>
+            <textarea id="mensagem" name="mensagem" class="form-input" placeholder="Escreva sua mensagem (mínimo 10 caracteres)..."
+                      required minlength="10" maxlength="1000" aria-required="true" aria-describedby="mensagem-error mensagem-count"></textarea>
+            <span class="form-error" id="mensagem-error" role="alert"></span>
+            <div class="char-count" id="mensagem-count" aria-live="polite">0 / 1000</div>
+          </div>
+
+          <div class="lgpd-group" id="lgpd-group">
+            <input type="checkbox" id="lgpd" name="lgpd" required aria-required="true" aria-describedby="lgpd-error">
+            <label for="lgpd">
+              Concordo com a <a href="#" onclick="return false">Política de Privacidade</a> e autorizo o uso dos meus dados para retorno de contato, conforme a <strong>Lei 13.709/2018 (LGPD)</strong>.
+            </label>
+          </div>
+          <span class="form-error" id="lgpd-error" role="alert"></span>
+
+          <button type="submit" class="btn btn-green btn-submit" id="btn-submit">
+            Enviar Mensagem ✉️
+          </button>
+        </form>
+
+        <!-- SUCCESS -->
+        <div class="form-success" id="form-success" aria-live="polite">
+          <div class="form-success__icon">🎉</div>
+          <h3>Mensagem enviada com sucesso!</h3>
+          <p>Recebemos seu contato e responderemos em até 24 horas úteis no e-mail informado.</p>
+          <button class="btn btn-ghost" style="margin-top:20px" onclick="resetarForm()">Enviar outra mensagem</button>
+        </div>
+      </div>
+
+      <!-- CONTACT INFO -->
+      <div data-reveal data-delay="1">
+        <div class="info-card">
+          <h3>Informações de contato</h3>
+          <div class="info-item">
+            <div class="info-item__icon">📍</div>
+            <div>
+              <div class="info-item__label">Endereço</div>
+              <div class="info-item__value">Rua Exemplo, 123 — Bairro<br>São Paulo / SP — CEP 00000-000</div>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-item__icon">📞</div>
+            <div>
+              <div class="info-item__label">Telefone</div>
+              <div class="info-item__value"><a href="tel:1100000000" style="color:var(--green)">(11) 0000-0000</a></div>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-item__icon">✉️</div>
+            <div>
+              <div class="info-item__label">E-mail</div>
+              <div class="info-item__value"><a href="mailto:contato@esperanca.org.br" style="color:var(--green)">contato@esperanca.org.br</a></div>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-item__icon">🕐</div>
+            <div>
+              <div class="info-item__label">Horário de atendimento</div>
+              <div class="info-item__value">Segunda a Sexta, 08h às 17h</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="map-embed" aria-label="Localização no mapa">
+          <span style="font-size:2rem">🗺️</span>
+          <p>São Paulo, SP</p>
+          <a href="https://maps.google.com/?q=São+Paulo+SP" target="_blank" rel="noopener noreferrer">
+            Ver no Google Maps →
+          </a>
+        </div>
+
+        <div class="info-card" style="margin-top:20px;margin-bottom:0;background:var(--green);color:var(--white)">
+          <h3 style="color:var(--white);font-size:1rem;margin-bottom:12px">💬 Também pelo WhatsApp</h3>
+          <p style="font-size:.88rem;color:rgba(255,255,255,.75);margin-bottom:14px">Para doações urgentes ou dúvidas rápidas, fale com a gente pelo WhatsApp.</p>
+          <a href="https://wa.me/5511000000000" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width:100%;justify-content:center">
+            Abrir WhatsApp
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer__grid">
+    <div>
+      <div class="footer__brand">🏡 Casa de Acolhimento Esperança</div>
+      <p class="footer__desc">Instituição sem fins lucrativos dedicada à proteção e ao desenvolvimento integral de crianças e adolescentes em situação de vulnerabilidade social.</p>
+      <div class="footer__socials">
+        <a href="#" class="footer__social" aria-label="Instagram">📷</a>
+        <a href="#" class="footer__social" aria-label="Facebook">📘</a>
+        <a href="#" class="footer__social" aria-label="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Navegação</div>
+      <ul class="footer__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quem-somos.html">Quem Somos</a></li>
+        <li><a href="projetos.html">Projetos</a></li>
+        <li><a href="como-ajudar.html">Como Ajudar</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Como Ajudar</div>
+      <ul class="footer__links">
+        <li><a href="como-ajudar.html#financeiro">Doação Financeira</a></li>
+        <li><a href="como-ajudar.html#itens">Doação de Itens</a></li>
+        <li><a href="como-ajudar.html#voluntariado">Voluntariado</a></li>
+        <li><a href="como-ajudar.html#urgentes">Necessidades Urgentes</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Contato</div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">📍</span><span>Rua Exemplo, 123 — Bairro<br>São Paulo / SP</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">📞</span><span>(11) 0000-0000</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">✉️</span><span>contato@esperanca.org.br</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">🕐</span><span>Seg–Sex, 08h–17h</span></div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2025 Casa de Acolhimento Esperança. Todos os direitos reservados.</span>
+    <span class="footer__cnpj">CNPJ: 00.000.000/0001-00</span>
+  </div>
+</footer>
+
+<script src="js/global.js"></script>
+<script>
+/* ============================================================
+   VALIDAÇÃO COMPLETA DO FORMULÁRIO — contato.html
+   ============================================================ */
+const form    = document.getElementById('contato-form');
+const success = document.getElementById('form-success');
+const btnSub  = document.getElementById('btn-submit');
+
+// ── Regex de e-mail ──
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+// ── Helpers ──
+function setError(inputId, errorId, msg) {
+  const el  = document.getElementById(inputId);
+  const err = document.getElementById(errorId);
+  if (!el || !err) return;
+  el.classList.add('error');
+  el.classList.remove('success');
+  err.textContent = msg;
+  err.classList.add('show');
+  el.setAttribute('aria-invalid', 'true');
+}
+function setSuccess(inputId, errorId) {
+  const el  = document.getElementById(inputId);
+  const err = document.getElementById(errorId);
+  if (!el || !err) return;
+  el.classList.remove('error');
+  el.classList.add('success');
+  err.classList.remove('show');
+  err.textContent = '';
+  el.setAttribute('aria-invalid', 'false');
+}
+function clearState(inputId, errorId) {
+  const el  = document.getElementById(inputId);
+  const err = document.getElementById(errorId);
+  if (!el || !err) return;
+  el.classList.remove('error','success');
+  err.classList.remove('show');
+  err.textContent = '';
+  el.removeAttribute('aria-invalid');
+}
+
+// ── Validação individual ──
+function validateNome() {
+  const v = document.getElementById('nome').value.trim();
+  if (!v)          { setError('nome','nome-error','Nome é obrigatório.'); return false; }
+  if (v.length < 3){ setError('nome','nome-error','Nome deve ter pelo menos 3 caracteres.'); return false; }
+  setSuccess('nome','nome-error');
+  return true;
+}
+function validateEmail() {
+  const v = document.getElementById('email').value.trim();
+  if (!v)                    { setError('email','email-error','E-mail é obrigatório.'); return false; }
+  if (!EMAIL_REGEX.test(v))  { setError('email','email-error','Digite um e-mail válido. Ex: nome@dominio.com'); return false; }
+  setSuccess('email','email-error');
+  return true;
+}
+function validateTipo() {
+  const v = document.getElementById('tipo').value;
+  if (!v) { setError('tipo','tipo-error','Selecione um tipo de interesse.'); return false; }
+  setSuccess('tipo','tipo-error');
+  return true;
+}
+function validateMensagem() {
+  const v = document.getElementById('mensagem').value.trim();
+  if (!v)           { setError('mensagem','mensagem-error','A mensagem é obrigatória.'); return false; }
+  if (v.length < 10){ setError('mensagem','mensagem-error',`Mensagem muito curta. Mínimo 10 caracteres (${v.length} digitados).`); return false; }
+  setSuccess('mensagem','mensagem-error');
+  return true;
+}
+function validateLgpd() {
+  const cb  = document.getElementById('lgpd');
+  const grp = document.getElementById('lgpd-group');
+  const err = document.getElementById('lgpd-error');
+  if (!cb.checked) {
+    grp.classList.add('error-state');
+    err.textContent = 'É necessário aceitar a Política de Privacidade para enviar.';
+    err.classList.add('show');
+    return false;
+  }
+  grp.classList.remove('error-state');
+  err.classList.remove('show');
+  return true;
+}
+
+// ── Real-time listeners ──
+document.getElementById('nome').addEventListener('blur', validateNome);
+document.getElementById('email').addEventListener('blur', validateEmail);
+document.getElementById('tipo').addEventListener('change', validateTipo);
+document.getElementById('lgpd').addEventListener('change', validateLgpd);
+
+// ── Textarea char counter ──
+const msgArea  = document.getElementById('mensagem');
+const msgCount = document.getElementById('mensagem-count');
+
+msgArea.addEventListener('input', () => {
+  const len = msgArea.value.length;
+  msgCount.textContent = `${len} / 1000`;
+  msgCount.className = 'char-count' + (len >= 10 ? ' min-ok' : len > 0 ? ' warn' : '');
+  if (len >= 10) setSuccess('mensagem','mensagem-error');
+});
+msgArea.addEventListener('blur', validateMensagem);
+
+// Máscara de telefone
+document.getElementById('telefone').addEventListener('input', function() {
+  let v = this.value.replace(/\D/g,'').slice(0,11);
+  if (v.length > 2)  v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+  if (v.length > 10) v = v.slice(0,10) + '-' + v.slice(10);
+  this.value = v;
+});
+
+// ── Submit ──
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const ok = [validateNome(), validateEmail(), validateTipo(), validateMensagem(), validateLgpd()]
+    .every(Boolean);
+
+  if (!ok) {
+    // Focus first error
+    const firstErr = form.querySelector('.form-input.error, input[aria-invalid="true"]');
+    if (firstErr) firstErr.focus();
+    return;
+  }
+
+  // Simulate submission
+  btnSub.disabled = true;
+  btnSub.textContent = 'Enviando...';
+
+  setTimeout(() => {
+    form.style.display = 'none';
+    success.classList.add('show');
+  }, 800);
+});
+
+// ── Reset ──
+function resetarForm() {
+  form.reset();
+  form.style.display = '';
+  success.classList.remove('show');
+  btnSub.disabled = false;
+  btnSub.textContent = 'Enviar Mensagem ✉️';
+  msgCount.textContent = '0 / 1000';
+  msgCount.className = 'char-count';
+  ['nome','email','tipo','mensagem'].forEach(id => clearState(id, id+'-error'));
+  document.getElementById('lgpd-group').classList.remove('error-state');
+  document.getElementById('lgpd-error').classList.remove('show');
+}
+</script>
+</body>
+</html>

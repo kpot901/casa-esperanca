@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Conheça os projetos da Casa de Acolhimento Esperança — ações que transformam vidas em São Paulo.">
+  <title>Projetos — Casa de Acolhimento Esperança</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* TABS */
+    .projetos-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .tab-btn {
+      padding: 8px 20px;
+      border-radius: 999px;
+      border: 2px solid var(--stone);
+      background: var(--white);
+      cursor: pointer;
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--text-mid);
+      transition: var(--transition);
+      font-family: var(--font-body);
+    }
+    .tab-btn:hover { border-color: var(--green); color: var(--green); }
+    .tab-btn.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: var(--white);
+    }
+
+    /* PROJETO CARDS */
+    .projetos-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-bottom: 40px;
+    }
+    .projeto-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .projeto-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+    .projeto-card[hidden] { display: none; }
+
+    .projeto-card__img {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+    }
+    .projeto-card__img--edu   { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+    .projeto-card__img--arte  { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+    .projeto-card__img--esporte { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+    .projeto-card__img--cine  { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }
+
+    .projeto-card__body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .projeto-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .projeto-card h3 { font-size: 1.15rem; margin-bottom: 8px; }
+    .projeto-card p  { font-size: .9rem; color: var(--text-light); line-height: 1.65; flex: 1; }
+
+    .projeto-card__meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--stone);
+      flex-wrap: wrap;
+    }
+    .meta-item { display: flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--text-light); }
+
+    .btn-load {
+      display: block;
+      margin: 0 auto;
+      padding: 12px 32px;
+    }
+    #no-results {
+      text-align: center;
+      padding: 60px 0;
+      color: var(--text-light);
+      grid-column: 1 / -1;
+      display: none;
+    }
+    #no-results.show { display: block; }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white);
+      border-radius: 12px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 36px;
+      position: relative;
+    }
+    .modal__close {
+      position: absolute; top: 16px; right: 16px;
+      background: var(--stone); border: none; cursor: pointer;
+      width: 32px; height: 32px; border-radius: 50%;
+      font-size: 1rem; display: flex; align-items: center; justify-content: center;
+    }
+    .modal__img {
+      height: 160px;
+      border-radius: var(--radius);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+    .modal h2 { margin-bottom: 8px; }
+    .modal p  { color: var(--text-mid); line-height: 1.7; margin-bottom: 12px; }
+    .modal__needs { margin-top: 16px; }
+    .modal__needs h4 { margin-bottom: 8px; font-size: 1rem; }
+    .need-item {
+      display: flex; gap: 8px; align-items: center;
+      padding: 8px 12px; background: var(--stone); border-radius: 6px; margin-bottom: 6px;
+      font-size: .88rem;
+    }
+
+    @media (max-width: 768px) {
+      .projetos-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="navbar__inner">
+    <a href="index.html" class="navbar__logo" aria-label="Casa de Acolhimento Esperança - Página Inicial">
+      <span class="navbar__logo-icon" aria-hidden="true">🏡</span>
+      <span>Casa Esperança</span>
+    </a>
+    <nav aria-label="Navegação principal">
+      <ul class="navbar__menu" id="main-menu" role="list">
+        <li><a href="index.html"        class="navbar__link">Home</a></li>
+        <li><a href="quem-somos.html"   class="navbar__link">Quem Somos</a></li>
+        <li><a href="projetos.html"     class="navbar__link active">Projetos</a></li>
+        <li><a href="como-ajudar.html"  class="navbar__link">Como Ajudar</a></li>
+        <li><a href="contato.html"      class="navbar__link navbar__cta">Contato</a></li>
+      </ul>
+    </nav>
+    <button class="navbar__hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main-content">
+
+<section class="page-header">
+  <h1>Nossos Projetos</h1>
+  <p>Conheça as ações que transformam vidas todos os dias na Casa Esperança.</p>
+</section>
+
+<section class="section" aria-labelledby="projetos-title">
+  <div class="container">
+
+    <!-- Tabs -->
+    <div class="projetos-tabs" role="tablist" aria-label="Filtrar projetos por status">
+      <button class="tab-btn active" role="tab" aria-selected="true"  data-filter="todos">Todos</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" data-filter="em_andamento">Em andamento</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" data-filter="concluido">Concluídos</button>
+      <button class="tab-btn"        role="tab" aria-selected="false" data-filter="urgente">Necessidade urgente</button>
+    </div>
+
+    <!-- Grid -->
+    <div class="projetos-grid" id="projetos-grid" aria-label="Lista de projetos">
+
+      <article class="projeto-card" data-status="em_andamento" data-reveal>
+        <div class="projeto-card__img projeto-card__img--edu">📚</div>
+        <div class="projeto-card__body">
+          <div class="projeto-card__header">
+            <h3>Escola de Reforço</h3>
+            <span class="badge badge-green">● Em andamento</span>
+          </div>
+          <p>Aulas de apoio em Português e Matemática para os acolhidos, ministradas por educadores e voluntários. Reduz a defasagem escolar e prepara para o futuro.</p>
+          <div class="projeto-card__meta">
+            <span class="meta-item">📅 Desde 2016</span>
+            <span class="meta-item">👥 40 crianças</span>
+            <span class="meta-item">👩‍🏫 8 voluntários</span>
+          </div>
+          <button class="btn btn-ghost" style="margin-top:16px;padding:8px 16px;font-size:.85rem" onclick="abrirModal('reforco')">Ver detalhes →</button>
+        </div>
+      </article>
+
+      <article class="projeto-card" data-status="em_andamento" data-reveal data-delay="1">
+        <div class="projeto-card__img projeto-card__img--arte">🎨</div>
+        <div class="projeto-card__body">
+          <div class="projeto-card__header">
+            <h3>Arte e Expressão</h3>
+            <span class="badge badge-green">● Em andamento</span>
+          </div>
+          <p>Atividades de pintura, teatro e música como ferramentas terapêuticas para desenvolver autoestima, criatividade e comunicação nos acolhidos.</p>
+          <div class="projeto-card__meta">
+            <span class="meta-item">📅 Desde 2019</span>
+            <span class="meta-item">👥 35 crianças</span>
+            <span class="meta-item">🎭 5 voluntários</span>
+          </div>
+          <button class="btn btn-ghost" style="margin-top:16px;padding:8px 16px;font-size:.85rem" onclick="abrirModal('arte')">Ver detalhes →</button>
+        </div>
+      </article>
+
+      <article class="projeto-card" data-status="urgente" data-reveal>
+        <div class="projeto-card__img projeto-card__img--esporte">⚽</div>
+        <div class="projeto-card__body">
+          <div class="projeto-card__header">
+            <h3>Esporte pela Paz</h3>
+            <span class="badge badge-red">🔴 Necessidade urgente</span>
+          </div>
+          <p>Atividades esportivas como futebol, vôlei e capoeira que promovem disciplina, trabalho em equipe e saúde física. Precisa de apoio urgente para retomar as atividades.</p>
+          <div class="projeto-card__meta">
+            <span class="meta-item">📅 Desde 2019</span>
+            <span class="meta-item">👥 50 crianças</span>
+            <span class="meta-item">⚠️ Materiais esgotados</span>
+          </div>
+          <button class="btn btn-ghost" style="margin-top:16px;padding:8px 16px;font-size:.85rem" onclick="abrirModal('esporte')">Ver detalhes →</button>
+        </div>
+      </article>
+
+      <article class="projeto-card" data-status="concluido" data-reveal data-delay="1">
+        <div class="projeto-card__img projeto-card__img--cine">🎬</div>
+        <div class="projeto-card__body">
+          <div class="projeto-card__header">
+            <h3>Cine-Clube</h3>
+            <span class="badge badge-stone">✓ Concluído</span>
+          </div>
+          <p>Sessões de cinema temáticas com rodas de conversa, desenvolvendo senso crítico e vocabulário emocional. Encerrado após 2 anos de atividade bem-sucedida.</p>
+          <div class="projeto-card__meta">
+            <span class="meta-item">📅 2021–2023</span>
+            <span class="meta-item">👥 80 crianças</span>
+            <span class="meta-item">✅ Meta atingida</span>
+          </div>
+          <button class="btn btn-ghost" style="margin-top:16px;padding:8px 16px;font-size:.85rem" onclick="abrirModal('cine')">Ver detalhes →</button>
+        </div>
+      </article>
+
+      <div id="no-results" role="status" aria-live="polite">
+        <span style="font-size:2rem">🔍</span>
+        <p style="margin-top:8px">Nenhum projeto encontrado nesta categoria.</p>
+      </div>
+    </div>
+
+    <a href="como-ajudar.html" class="btn btn-green btn-load">💛 Apoiar um projeto</a>
+  </div>
+</section>
+
+</main>
+
+<!-- MODAL TEMPLATE -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <button class="modal__close" onclick="fecharModal()" aria-label="Fechar">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer__grid">
+    <div>
+      <div class="footer__brand">🏡 Casa de Acolhimento Esperança</div>
+      <p class="footer__desc">Instituição sem fins lucrativos dedicada à proteção e ao desenvolvimento integral de crianças e adolescentes em situação de vulnerabilidade social.</p>
+      <div class="footer__socials">
+        <a href="#" class="footer__social" aria-label="Instagram">📷</a>
+        <a href="#" class="footer__social" aria-label="Facebook">📘</a>
+        <a href="#" class="footer__social" aria-label="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Navegação</div>
+      <ul class="footer__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quem-somos.html">Quem Somos</a></li>
+        <li><a href="projetos.html">Projetos</a></li>
+        <li><a href="como-ajudar.html">Como Ajudar</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Projetos Ativos</div>
+      <ul class="footer__links">
+        <li><a href="#">Escola de Reforço</a></li>
+        <li><a href="#">Arte e Expressão</a></li>
+        <li><a href="#">Esporte pela Paz</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Contato</div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">📍</span><span>Rua Exemplo, 123 — Bairro<br>São Paulo / SP</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">📞</span><span>(11) 0000-0000</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">✉️</span><span>contato@esperanca.org.br</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">🕐</span><span>Seg–Sex, 08h–17h</span></div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2025 Casa de Acolhimento Esperança. Todos os direitos reservados.</span>
+    <span class="footer__cnpj">CNPJ: 00.000.000/0001-00</span>
+  </div>
+</footer>
+
+<script src="js/global.js"></script>
+<script>
+// ── Filter tabs ──
+const tabBtns = document.querySelectorAll('.tab-btn');
+const cards   = document.querySelectorAll('.projeto-card');
+const noRes   = document.getElementById('no-results');
+
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
+    btn.classList.add('active');
+    btn.setAttribute('aria-selected','true');
+
+    const filter = btn.dataset.filter;
+    let visible = 0;
+    cards.forEach(card => {
+      const show = filter === 'todos' || card.dataset.status === filter;
+      card.hidden = !show;
+      if (show) visible++;
+    });
+    noRes.classList.toggle('show', visible === 0);
+  });
+});
+
+// ── Modals ──
+const modals = {
+  reforco: {
+    img: '📚', bg: 'linear-gradient(135deg,#d1fae5,#a7f3d0)',
+    status: '<span class="badge badge-green">● Em andamento</span>',
+    title: 'Escola de Reforço',
+    desc: 'O projeto funciona de segunda a sexta, das 14h às 16h, com turmas separadas por faixa etária. Os conteúdos são alinhados com o currículo escolar de cada criança, com foco em Português, Matemática e habilidades de leitura.',
+    needs: ['Cadernos e material escolar', 'Livros paradidáticos', 'Impressora e cartuchos']
+  },
+  arte: {
+    img: '🎨', bg: 'linear-gradient(135deg,#fef3c7,#fde68a)',
+    status: '<span class="badge badge-green">● Em andamento</span>',
+    title: 'Arte e Expressão',
+    desc: 'Realizado às quartas e sextas, o projeto conta com voluntários das áreas de artes visuais, música e teatro. As atividades têm abordagem lúdica e terapêutica, sendo acompanhadas pela psicóloga da casa.',
+    needs: ['Tintas e pincéis', 'Telas de pintura', 'Instrumentos musicais simples']
+  },
+  esporte: {
+    img: '⚽', bg: 'linear-gradient(135deg,#dbeafe,#bfdbfe)',
+    status: '<span class="badge badge-red">🔴 Necessidade urgente</span>',
+    title: 'Esporte pela Paz',
+    desc: 'As atividades esportivas estão temporariamente reduzidas por falta de materiais. O projeto precisa de bolas, coletes e apoio de voluntários com experiência em educação física ou esportes coletivos.',
+    needs: ['Bolas de futebol e vôlei', 'Coletes esportivos', 'Voluntário educador físico']
+  },
+  cine: {
+    img: '🎬', bg: 'linear-gradient(135deg,#f3e8ff,#e9d5ff)',
+    status: '<span class="badge badge-stone">✓ Concluído</span>',
+    title: 'Cine-Clube',
+    desc: 'O Cine-Clube funcionou entre 2021 e 2023, realizando mais de 80 sessões. O projeto alcançou todos os objetivos propostos e seu modelo foi documentado para servir de base para futuras iniciativas similares.',
+    needs: []
+  }
+};
+
+function abrirModal(id) {
+  const m = modals[id];
+  const needsHtml = m.needs.length
+    ? `<div class="modal__needs"><h4>📦 Necessidades do projeto:</h4>${m.needs.map(n=>`<div class="need-item">⚠️ ${n}</div>`).join('')}</div>`
+    : '<p style="color:var(--green);font-weight:500">✅ Projeto sem necessidades pendentes no momento.</p>';
+  document.getElementById('modal-content').innerHTML = `
+    <div class="modal__img" style="background:${m.bg}">${m.img}</div>
+    <div style="margin-bottom:10px">${m.status}</div>
+    <h2 id="modal-title">${m.title}</h2>
+    <p style="margin-top:12px">${m.desc}</p>
+    ${needsHtml}
+    <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+      <a href="como-ajudar.html" class="btn btn-green">💛 Apoiar este projeto</a>
+      <button onclick="fecharModal()" class="btn btn-ghost">Fechar</button>
+    </div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-overlay')) fecharModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') fecharModal(); });
+</script>
+</body>
+</html>

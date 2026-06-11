@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Veja como ajudar a Casa de Acolhimento Esperança: doação financeira via Pix, doação de itens ou voluntariado.">
+  <title>Como Ajudar — Casa de Acolhimento Esperança</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* MODALIDADES */
+    .modalidades-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-bottom: 60px;
+    }
+    .modalidade-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      border-top: 4px solid var(--stone);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .modalidade-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+    .modalidade-card--financeiro { border-top-color: var(--amber); }
+    .modalidade-card--itens      { border-top-color: var(--green); }
+    .modalidade-card--voluntario { border-top-color: #7c3aed; }
+
+    .modalidade-icon {
+      width: 64px; height: 64px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    .modalidade-icon--fin  { background: var(--amber-light); }
+    .modalidade-icon--ite  { background: var(--green-light); }
+    .modalidade-icon--vol  { background: #ede9fe; }
+
+    .modalidade-card h3 { margin-bottom: 8px; }
+    .modalidade-card p  { color: var(--text-light); font-size: .93rem; line-height: 1.7; flex: 1; margin-bottom: 24px; }
+
+    /* PIX BLOCK */
+    .pix-block {
+      background: linear-gradient(135deg, var(--green) 0%, #0a7a5c 100%);
+      border-radius: 12px;
+      padding: 32px;
+      color: var(--white);
+      margin-bottom: 60px;
+    }
+    .pix-block h3 { color: var(--white); font-size: 1.3rem; margin-bottom: 20px; }
+    .pix-data {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    .pix-item {
+      background: rgba(255,255,255,.1);
+      border-radius: 8px;
+      padding: 16px 20px;
+    }
+    .pix-item__label { font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.6); margin-bottom: 4px; }
+    .pix-item__value { font-size: 1rem; font-weight: 600; color: var(--amber); word-break: break-all; }
+    .pix-copy {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.12);
+      border: 1px dashed rgba(255,255,255,.4);
+      border-radius: 8px;
+      padding: 14px 20px;
+      margin-top: 16px;
+      cursor: pointer;
+      width: 100%;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: .9rem;
+      transition: var(--transition);
+    }
+    .pix-copy:hover { background: rgba(255,255,255,.2); }
+    .pix-copy .chave { flex: 1; font-weight: 600; color: var(--amber); font-size: .95rem; }
+
+    /* ITENS SECTION */
+    .itens-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .item-categoria {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+    .item-categoria__title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .item-categoria ul { padding-left: 0; }
+    .item-categoria li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--stone);
+      font-size: .9rem;
+      color: var(--text-mid);
+    }
+    .item-categoria li:last-child { border-bottom: none; }
+    .item-categoria li::before { content: '→'; color: var(--green); font-weight: 700; }
+
+    /* URGENTES */
+    .urgentes-list { display: flex; flex-direction: column; gap: 10px; }
+    .urgente-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      box-shadow: var(--shadow);
+      border-left: 4px solid var(--red);
+    }
+    .urgente-badge {
+      background: var(--red);
+      color: var(--white);
+      font-size: .7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: .06em;
+      flex-shrink: 0;
+    }
+    .urgente-item__info { flex: 1; }
+    .urgente-item__info strong { display: block; font-size: .95rem; }
+    .urgente-item__info small  { color: var(--text-light); font-size: .82rem; }
+
+    /* VOLUNTARIADO */
+    .voluntario-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .step-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      position: relative;
+    }
+    .step-number {
+      width: 44px; height: 44px;
+      background: var(--green);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 0 auto 16px;
+    }
+    .step-card h4 { margin-bottom: 8px; }
+    .step-card p  { font-size: .9rem; color: var(--text-light); line-height: 1.6; }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: var(--green);
+      color: var(--white);
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: .9rem;
+      font-weight: 500;
+      box-shadow: var(--shadow-md);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity .3s, transform .3s;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      .modalidades-grid  { grid-template-columns: 1fr; }
+      .pix-data          { grid-template-columns: 1fr; }
+      .itens-grid        { grid-template-columns: 1fr; }
+      .voluntario-steps  { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .pix-block { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="navbar" role="banner">
+  <div class="navbar__inner">
+    <a href="index.html" class="navbar__logo" aria-label="Casa de Acolhimento Esperança - Página Inicial">
+      <span class="navbar__logo-icon" aria-hidden="true">🏡</span>
+      <span>Casa Esperança</span>
+    </a>
+    <nav aria-label="Navegação principal">
+      <ul class="navbar__menu" id="main-menu" role="list">
+        <li><a href="index.html"        class="navbar__link">Home</a></li>
+        <li><a href="quem-somos.html"   class="navbar__link">Quem Somos</a></li>
+        <li><a href="projetos.html"     class="navbar__link">Projetos</a></li>
+        <li><a href="como-ajudar.html"  class="navbar__link active">Como Ajudar</a></li>
+        <li><a href="contato.html"      class="navbar__link navbar__cta">Contato</a></li>
+      </ul>
+    </nav>
+    <button class="navbar__hamburger" aria-label="Abrir menu" aria-expanded="false" aria-controls="main-menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main-content">
+
+<section class="page-header">
+  <h1>Como Você Pode Ajudar</h1>
+  <p>Cada gesto de amor faz a diferença. Escolha a melhor forma de contribuir com a Casa Esperança.</p>
+</section>
+
+<!-- MODALIDADES -->
+<section class="section" id="modalidades" aria-labelledby="mod-title">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:40px" data-reveal>
+      <span class="section-label">Formas de Contribuir</span>
+      <h2 id="mod-title">Encontre seu jeito de ajudar</h2>
+    </div>
+    <div class="modalidades-grid">
+      <div class="modalidade-card modalidade-card--financeiro" data-reveal>
+        <div class="modalidade-icon modalidade-icon--fin">💰</div>
+        <h3>Doação Financeira</h3>
+        <p>Contribua com Pix, TED ou boleto. Seus recursos são aplicados diretamente em alimentação, vestuário, materiais educativos e manutenção da casa. Transparência total no uso dos recursos.</p>
+        <a href="#financeiro" class="btn btn-primary">Ver dados bancários</a>
+      </div>
+      <div class="modalidade-card modalidade-card--itens" data-reveal data-delay="1">
+        <div class="modalidade-icon modalidade-icon--ite">📦</div>
+        <h3>Doação de Itens</h3>
+        <p>Roupas, alimentos não perecíveis, material escolar, itens de higiene pessoal e de cama/mesa/banho. Aceitamos doações de segunda a sexta, das 8h às 16h.</p>
+        <a href="#itens" class="btn btn-green">Ver lista de itens</a>
+      </div>
+      <div class="modalidade-card modalidade-card--voluntario" data-reveal data-delay="2">
+        <div class="modalidade-icon modalidade-icon--vol">❤️</div>
+        <h3>Seja Voluntário</h3>
+        <p>Ofereça seu tempo, conhecimento e habilidades. Precisamos de educadores, psicólogos, profissionais de saúde, artistas e pessoas dispostas a amar e acolher.</p>
+        <a href="contato.html" class="btn" style="background:#7c3aed;color:white">Quero ser voluntário</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOAÇÃO FINANCEIRA -->
+<section class="section section--alt" id="financeiro" aria-labelledby="fin-title">
+  <div class="container" data-reveal>
+    <span class="section-label">Doação Financeira</span>
+    <h2 id="fin-title" style="margin-bottom:28px">Dados para doação</h2>
+    <div class="pix-block">
+      <h3>💚 Dados Bancários</h3>
+      <div class="pix-data">
+        <div class="pix-item">
+          <div class="pix-item__label">Favorecido</div>
+          <div class="pix-item__value">Casa de Acolhimento Esperança</div>
+        </div>
+        <div class="pix-item">
+          <div class="pix-item__label">CNPJ</div>
+          <div class="pix-item__value">00.000.000/0001-00</div>
+        </div>
+        <div class="pix-item">
+          <div class="pix-item__label">Banco</div>
+          <div class="pix-item__value">Banco Exemplo S.A.</div>
+        </div>
+        <div class="pix-item">
+          <div class="pix-item__label">Agência / Conta</div>
+          <div class="pix-item__value">Ag. 0000 — CC 00000-0</div>
+        </div>
+      </div>
+      <button class="pix-copy" onclick="copiarPix()" aria-label="Copiar chave Pix">
+        <span>🔑 Chave Pix (CNPJ):</span>
+        <span class="chave">00.000.000/0001-00</span>
+        <span id="copy-icon">📋 Copiar</span>
+      </button>
+    </div>
+    <p style="color:var(--text-light);font-size:.88rem;text-align:center">
+      ✅ Emitimos comprovante de doação para pessoa jurídica. Entre em contato pelo formulário.
+    </p>
+  </div>
+</section>
+
+<!-- ITENS -->
+<section class="section" id="itens" aria-labelledby="itens-title">
+  <div class="container">
+    <div data-reveal>
+      <span class="section-label">Doação de Itens</span>
+      <h2 id="itens-title" style="margin-bottom:28px">O que precisamos</h2>
+    </div>
+    <div class="itens-grid" data-reveal data-delay="1">
+      <div class="item-categoria">
+        <div class="item-categoria__title">👗 Vestuário</div>
+        <ul>
+          <li>Roupas infantis (4 a 16 anos)</li>
+          <li>Calçados em bom estado</li>
+          <li>Roupas de cama tamanho solteiro</li>
+          <li>Toalhas de banho</li>
+        </ul>
+      </div>
+      <div class="item-categoria">
+        <div class="item-categoria__title">🥫 Alimentos</div>
+        <ul>
+          <li>Arroz, feijão e macarrão</li>
+          <li>Azeite e óleos de cozinha</li>
+          <li>Leite em pó e achocolatado</li>
+          <li>Biscoitos e cereais</li>
+        </ul>
+      </div>
+      <div class="item-categoria">
+        <div class="item-categoria__title">📚 Material Escolar</div>
+        <ul>
+          <li>Cadernos e folhas sulfite</li>
+          <li>Lápis, canetas e borrachas</li>
+          <li>Mochilas em bom estado</li>
+          <li>Livros infantojuvenis</li>
+        </ul>
+      </div>
+      <div class="item-categoria">
+        <div class="item-categoria__title">🧴 Higiene Pessoal</div>
+        <ul>
+          <li>Fraldas geriátricas tamanho G</li>
+          <li>Shampoo e condicionador</li>
+          <li>Sabonete e pasta de dente</li>
+          <li>Absorventes femininos</li>
+        </ul>
+      </div>
+    </div>
+    <div style="background:var(--amber-light);border-radius:var(--radius);padding:20px 24px;margin-top:8px;border-left:4px solid var(--amber)">
+      <strong>📍 Local de entrega:</strong> Rua Exemplo, 123 — São Paulo/SP
+      &nbsp;|&nbsp; <strong>🕐 Horário:</strong> Seg–Sex, 08h–16h
+      &nbsp;|&nbsp; <strong>📞 Confirmar:</strong> (11) 0000-0000
+    </div>
+  </div>
+</section>
+
+<!-- URGENTES -->
+<section class="section section--alt" id="urgentes" aria-labelledby="urg-title">
+  <div class="container">
+    <div data-reveal>
+      <span class="section-label" style="color:var(--red)">🔴 Urgente</span>
+      <h2 id="urg-title" style="margin-bottom:28px">Necessidades urgentes</h2>
+    </div>
+    <div class="urgentes-list" data-reveal data-delay="1">
+      <div class="urgente-item">
+        <span class="urgente-badge">URGENTE</span>
+        <div class="urgente-item__info">
+          <strong>Fraldas Geriátricas Tamanho G</strong>
+          <small>Necessidade recorrente — qualquer quantidade ajuda</small>
+        </div>
+      </div>
+      <div class="urgente-item">
+        <span class="urgente-badge">URGENTE</span>
+        <div class="urgente-item__info">
+          <strong>Material Escolar (cadernos e canetas)</strong>
+          <small>Início do semestre letivo — 40 crianças precisam de material</small>
+        </div>
+      </div>
+      <div class="urgente-item">
+        <span class="urgente-badge">URGENTE</span>
+        <div class="urgente-item__info">
+          <strong>Roupas de Cama (tamanho solteiro)</strong>
+          <small>Lençóis e fronhas — 20 conjuntos necessários</small>
+        </div>
+      </div>
+      <div class="urgente-item">
+        <span class="urgente-badge">URGENTE</span>
+        <div class="urgente-item__info">
+          <strong>Bolas de Futebol e Vôlei</strong>
+          <small>Projeto Esporte pela Paz aguarda doação de materiais</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOLUNTARIADO -->
+<section class="section" id="voluntariado" aria-labelledby="vol-title">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:40px" data-reveal>
+      <span class="section-label">Voluntariado</span>
+      <h2 id="vol-title">Como se tornar voluntário</h2>
+      <p class="section-sub" style="margin:0 auto">Processo simples em 3 passos.</p>
+    </div>
+    <div class="voluntario-steps" data-reveal>
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h4>Preencha o Formulário</h4>
+        <p>Acesse nossa página de contato, selecione "Voluntariado" e nos conte suas habilidades e disponibilidade.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h4>Entrevista + Cadastro</h4>
+        <p>Nossa equipe entra em contato em até 3 dias úteis para uma conversa e explicação sobre o projeto.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h4>Comece a Transformar</h4>
+        <p>Após aprovação e orientação, você já pode começar a fazer a diferença na vida das crianças.</p>
+      </div>
+    </div>
+    <div class="text-center" style="margin-top:40px">
+      <a href="contato.html" class="btn btn-green">Quero ser voluntário →</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite">✅ Chave Pix copiada!</div>
+
+<footer class="footer" role="contentinfo">
+  <div class="footer__grid">
+    <div>
+      <div class="footer__brand">🏡 Casa de Acolhimento Esperança</div>
+      <p class="footer__desc">Instituição sem fins lucrativos dedicada à proteção e ao desenvolvimento integral de crianças e adolescentes em situação de vulnerabilidade social.</p>
+      <div class="footer__socials">
+        <a href="#" class="footer__social" aria-label="Instagram">📷</a>
+        <a href="#" class="footer__social" aria-label="Facebook">📘</a>
+        <a href="#" class="footer__social" aria-label="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer__col-title">Navegação</div>
+      <ul class="footer__links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quem-somos.html">Quem Somos</a></li>
+        <li><a href="projetos.html">Projetos</a></li>
+        <li><a href="como-ajudar.html">Como Ajudar</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Como Ajudar</div>
+      <ul class="footer__links">
+        <li><a href="#financeiro">Doação Financeira</a></li>
+        <li><a href="#itens">Doação de Itens</a></li>
+        <li><a href="#voluntariado">Voluntariado</a></li>
+        <li><a href="#urgentes">Necessidades Urgentes</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer__col-title">Contato</div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">📍</span><span>Rua Exemplo, 123 — Bairro<br>São Paulo / SP</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">📞</span><span>(11) 0000-0000</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">✉️</span><span>contato@esperanca.org.br</span></div>
+      <div class="footer__contact-item"><span class="footer__contact-icon">🕐</span><span>Seg–Sex, 08h–17h</span></div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2025 Casa de Acolhimento Esperança. Todos os direitos reservados.</span>
+    <span class="footer__cnpj">CNPJ: 00.000.000/0001-00</span>
+  </div>
+</footer>
+
+<script src="js/global.js"></script>
+<script>
+function copiarPix() {
+  const chave = '00.000.000/0001-00';
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(chave).then(mostrarToast);
+  } else {
+    const el = document.createElement('textarea');
+    el.value = chave;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    mostrarToast();
+  }
+}
+
+function mostrarToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>
